@@ -192,7 +192,7 @@ public class ConexionBD {
 
         String query="DELETE FROM `videojuegos` WHERE `nombre` = '"+nombreJuego+"'";
         stmt.executeUpdate(query);
-        System.out.println("Libro eliminado");
+        System.out.println("Juego eliminado");
 
     
         try (Statement stmtSelect = conn.createStatement();
