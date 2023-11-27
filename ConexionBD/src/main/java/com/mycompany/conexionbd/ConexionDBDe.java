@@ -141,7 +141,7 @@ public class ConexionDBDe {
                     PreparedStatement.RETURN_GENERATED_KEYS);
 
         
-        String queryInsert = "INSERT INTO `videojuegos` (`id`, `nombre`, `genero`, `fechalanzamiento`, `compañia`, `precio`) VALUES (NULL, '"+nombre+"', '"+genero+"', '"+fecha+"', '"+compañia+"', '"+precio+"')";
+        //String queryInsert = "INSERT INTO `videojuegos` (`id`, `nombre`, `genero`, `fechalanzamiento`, `compañia`, `precio`) VALUES (NULL, '"+nombre+"', '"+genero+"', '"+fecha+"', '"+compañia+"', '"+precio+"')";
               sentencia.setString(1, nombre);
               sentencia.setString(2, genero);
               sentencia.setString(3, fecha);
