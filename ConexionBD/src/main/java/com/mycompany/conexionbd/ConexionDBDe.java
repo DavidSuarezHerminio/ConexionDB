@@ -5,17 +5,20 @@ package com.mycompany.conexionbd;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-public class ConexionBD {
+public class ConexionDBDe {
 
     static final String DB_URL = "jdbc:mysql://localhost:3306/jcvd";
     static final String USER = "David Suarez";
     static final String PASS = "1234";
     static final String QUERY = "SELECT * FROM videojuegos";
+    static final String QUERY1 = "SELECT nombre FROM videojuegos where nombre = ?";
+
 
     public static void main(String[] args)  {
         Scanner teclado = new Scanner(System.in);
@@ -48,7 +51,7 @@ public class ConexionBD {
             }
             case 3 -> {
                 System.out.println("Vamos a insertar un videojuego que sera : Fifa, Futbol, 2003-10-18, Ea sport, 60 euros");
-                String nombre="Fifa", genero="Futbol", fecha="2003-10-18", compañia="EA Sport", precio="60";
+                String nombre="Fifa24", genero="Futbol", fecha="2003-10-18", compañia="EA Sport", precio="60";
                 nuevoReguistro(nombre, genero, compañia, precio, fecha);
             }
             case 4 -> {   
@@ -80,7 +83,12 @@ public class ConexionBD {
     public static boolean buscaNombre(String juego) {
         
         boolean resultado = false;         
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(QUERY);) {
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS) ;
+            PreparedStatement sentencia = conn.prepareStatement(QUERY1);
+            sentencia.setString(1, juego);
+            ResultSet rs = sentencia.executeQuery();
+            
             while (rs.next()) {
                 //System.out.println("Nombre: " + rs.getString("Nombre"));
                 String nombre = rs.getString("Nombre");
@@ -94,7 +102,7 @@ public class ConexionBD {
                
             }
         
-        stmt.close();
+        rs.close();
        
         if (resultado == true){
             System.out.println("Juego encontrado!!");
@@ -126,96 +134,82 @@ public class ConexionBD {
         }
     }
     public static void nuevoReguistro(String nombre, String genero, String compañia, String precio, String fecha) {
-      try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-         Statement stmt = conn.createStatement()) {
+      try {
+          Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);  
+                        PreparedStatement sentencia = conn.prepareStatement(
+                     "insert into videojuegos values (null, ?, ?, ?, ?, ?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
 
         
         String queryInsert = "INSERT INTO `videojuegos` (`id`, `nombre`, `genero`, `fechalanzamiento`, `compañia`, `precio`) VALUES (NULL, '"+nombre+"', '"+genero+"', '"+fecha+"', '"+compañia+"', '"+precio+"')";
-        stmt.executeUpdate(queryInsert);
-        System.out.println("Videojuego añadido");
+              sentencia.setString(1, nombre);
+              sentencia.setString(2, genero);
+              sentencia.setString(3, fecha);
+              sentencia.setString(4, compañia);
+              sentencia.setString(5, precio);
 
-    
-        try (Statement stmtSelect = conn.createStatement();
-             ResultSet rs = stmtSelect.executeQuery(QUERY)) {
 
-            System.out.println("");
-            System.out.println("Muestro todos los videojuegos : ");
-            while (rs.next()) {
-                System.out.print("  ID: " + rs.getInt("id"));
-                System.out.print(", Nombre: " + rs.getString("Nombre"));
-                System.out.print(", Genero: " + rs.getString("Genero"));
-                System.out.print(", Precio: " + rs.getFloat("Precio"));
-                System.out.print(", Compañia: " + rs.getString("Compañia"));
-                System.out.print(", Fecha Lanzamiento: " + rs.getDate("FechaLanzamiento"));
-                System.out.println("");
-            }
+
+              int filasAfectadas = sentencia.executeUpdate();
+
+        if (filasAfectadas > 0) {
+            System.out.println("Videojuego añadido");
+        } else {
+            System.out.println("No se pudo añadir el videojuego");
         }
-        stmt.close();
+
     } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
+            e.printStackTrace();
+        }
+      }
+
     public static void nuevoReguistroPorTeclado(String nombre, String genero, String compañia, String precio, String fecha) {
-      try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-         Statement stmt = conn.createStatement()) {
+      try {
+          Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);  
+                        PreparedStatement sentencia = conn.prepareStatement(
+                     "insert into videojuegos values (null, ?, ?, ?, ?, ?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
 
         
         String queryInsert = "INSERT INTO `videojuegos` (`id`, `nombre`, `genero`, `fechalanzamiento`, `compañia`, `precio`) VALUES (NULL, '"+nombre+"', '"+genero+"', '"+fecha+"', '"+compañia+"', '"+precio+"')";
-        stmt.executeUpdate(queryInsert);
-        System.out.println("Videojuego añadido");
+              sentencia.setString(1, nombre);
+              sentencia.setString(2, genero);
+              sentencia.setString(3, fecha);
+              sentencia.setString(4, compañia);
+              sentencia.setString(5, precio);
+              
+              
+              int filasAfectadas = sentencia.executeUpdate();
 
-    
-        try (Statement stmtSelect = conn.createStatement();
-             ResultSet rs = stmtSelect.executeQuery(QUERY)) {
-
-            System.out.println("");
-            System.out.println("Muestro todos los videojuegos : ");
-            while (rs.next()) {
-                System.out.print("  ID: " + rs.getInt("id"));
-                System.out.print(", Nombre: " + rs.getString("Nombre"));
-                System.out.print(", Genero: " + rs.getString("Genero"));
-                System.out.print(", Precio: " + rs.getFloat("Precio"));
-                System.out.print(", Compañia: " + rs.getString("Compañia"));
-                System.out.print(", Fecha Lanzamiento: " + rs.getDate("FechaLanzamiento"));
-                System.out.println("");
-            }
+        if (filasAfectadas > 0) {
+            System.out.println("Videojuego añadido");
+        } else {
+            System.out.println("No se pudo añadir el videojuego");
         }
-            stmt.close();
     } catch (SQLException e) {
         e.printStackTrace();
     }
 }
     public static boolean eliminaRegistro(String nombreJuego){
         boolean resultado = false;
-         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-         Statement stmt = conn.createStatement()) {
+         try{
+             Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             
+              PreparedStatement sentencia = conn.prepareStatement(
+                     "DELETE FROM `videojuegos` where nombre = ( ? )",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
+              
+              String query="DELETE FROM `videojuegos` WHERE `nombre` = '"+nombreJuego+"'";
+            sentencia.setString(1, nombreJuego);       
 
-        String query="DELETE FROM `videojuegos` WHERE `nombre` = '"+nombreJuego+"'";
-        stmt.executeUpdate(query);
-        System.out.println("Juego eliminado");
+         int filasAfectadas = sentencia.executeUpdate();
 
-    
-        try (Statement stmtSelect = conn.createStatement();
-             ResultSet rs = stmtSelect.executeQuery(QUERY)) {
-
-            System.out.println("");
-            System.out.println("Muestro todos los videojuegos : ");
-            while (rs.next()) {
-                System.out.print("  ID: " + rs.getInt("id"));
-                System.out.print(", Nombre: " + rs.getString("Nombre"));
-                System.out.print(", Genero: " + rs.getString("Genero"));
-                System.out.print(", Precio: " + rs.getFloat("Precio"));
-                System.out.print(", Compañia: " + rs.getString("Compañia"));
-                System.out.print(", Fecha Lanzamiento: " + rs.getDate("FechaLanzamiento"));
-                System.out.println("");
-            }
+        if (filasAfectadas > 0) {
+            System.out.println("Videojuego borrado");
+        } else {
+            System.out.println("No se pudo borrar el videojuego");
         }
-        if (resultado == true){
-            System.out.println("Juego encontrado!!");
-        }else {
-            System.out.println("Juego no encontrado");
-        }
-        stmt.close();
+
     } catch (SQLException e) {
         e.printStackTrace();
     }
