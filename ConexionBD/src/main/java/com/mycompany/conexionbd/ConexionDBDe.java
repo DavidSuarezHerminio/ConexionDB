@@ -114,6 +114,8 @@ public class ConexionDBDe {
     }
         return resultado;
     }
+    
+    //es el unico que dejo igual que la practica anterior, no la edito
     public static void lanzaConsulta(String miQuery){
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS); 
         Statement stmt = conn.createStatement(); 
@@ -141,7 +143,6 @@ public class ConexionDBDe {
                     PreparedStatement.RETURN_GENERATED_KEYS);
 
         
-        //String queryInsert = "INSERT INTO `videojuegos` (`id`, `nombre`, `genero`, `fechalanzamiento`, `compañia`, `precio`) VALUES (NULL, '"+nombre+"', '"+genero+"', '"+fecha+"', '"+compañia+"', '"+precio+"')";
               sentencia.setString(1, nombre);
               sentencia.setString(2, genero);
               sentencia.setString(3, fecha);
@@ -150,8 +151,8 @@ public class ConexionDBDe {
 
 
 
-              int filasAfectadas = sentencia.executeUpdate();
-
+         //copruebo que el videojuego ha sido insertado:
+        int filasAfectadas = sentencia.executeUpdate();
         if (filasAfectadas > 0) {
             System.out.println("Videojuego añadido");
         } else {
@@ -171,7 +172,6 @@ public class ConexionDBDe {
                     PreparedStatement.RETURN_GENERATED_KEYS);
 
         
-        String queryInsert = "INSERT INTO `videojuegos` (`id`, `nombre`, `genero`, `fechalanzamiento`, `compañia`, `precio`) VALUES (NULL, '"+nombre+"', '"+genero+"', '"+fecha+"', '"+compañia+"', '"+precio+"')";
               sentencia.setString(1, nombre);
               sentencia.setString(2, genero);
               sentencia.setString(3, fecha);
@@ -179,8 +179,9 @@ public class ConexionDBDe {
               sentencia.setString(5, precio);
               
               
+              
+              //copruebo que el videojuego ha sido insertado : 
               int filasAfectadas = sentencia.executeUpdate();
-
         if (filasAfectadas > 0) {
             System.out.println("Videojuego añadido");
         } else {
@@ -194,16 +195,15 @@ public class ConexionDBDe {
         boolean resultado = false;
          try{
              Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-             
               PreparedStatement sentencia = conn.prepareStatement(
                      "DELETE FROM `videojuegos` where nombre = ( ? )",
                     PreparedStatement.RETURN_GENERATED_KEYS);
               
-              String query="DELETE FROM `videojuegos` WHERE `nombre` = '"+nombreJuego+"'";
             sentencia.setString(1, nombreJuego);       
 
+            
+            //copruebo que el videojuego ha sido borrado : 
          int filasAfectadas = sentencia.executeUpdate();
-
         if (filasAfectadas > 0) {
             System.out.println("Videojuego borrado");
         } else {
