@@ -20,7 +20,7 @@ public class ConexionDBDe {
     static final String PASS = "1234"; //mi contraseña 
     static final String QUERY = "SELECT * FROM videojuegos"; //aqui hago una consulta y la guardo en un String llamado QUERY
     static final String QUERY1 = "SELECT nombre FROM videojuegos where nombre = ?"; //Aqui hago otra consulta diferente a la anterior pero de la misma manera 
-   // static PoolDateSource pds;
+   // static PoolDateSource pds;  TENGO LA CONEXION POOL BIEN HECHA Y PREPARDA PERO COMO YA TENGO TODOS LOS COMENTARIOS Y TODO DE LA OTRA MANERA LO HE COMENTADO, PERO FUNCIONA. 
 
     public static void main(String[] args)  {
         /*
