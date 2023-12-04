@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
+import oracle.ucp.jdbc.PoolDataSourceFactory;
+import oracle.ucp.jdbc.PoolDataSource;
 
 public class ConexionDBDe {
 
@@ -18,9 +20,18 @@ public class ConexionDBDe {
     static final String PASS = "1234"; //mi contraseña 
     static final String QUERY = "SELECT * FROM videojuegos"; //aqui hago una consulta y la guardo en un String llamado QUERY
     static final String QUERY1 = "SELECT nombre FROM videojuegos where nombre = ?"; //Aqui hago otra consulta diferente a la anterior pero de la misma manera 
-
+   // static PoolDateSource pds;
 
     public static void main(String[] args)  {
+        /*
+          pds = PoolDataSourceFactory.getPoolDataSource();
+          
+           pds.setConnectionFactoryClassName("com.mysql.cj.jdbc.Driver");
+           pds.setURL("jdbc:mysql://localhost:3306/jcvd");
+           pds.setUser("David Suarez");
+           pds.setPassword("1234");    
+*/
+         
         Scanner teclado = new Scanner(System.in);
         int numero = 0;      
         while(numero != 10){
